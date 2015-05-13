@@ -29,6 +29,8 @@ from beaker.util import parse_cache_config_options
 
 import re
 import sys
+import webbrowser
+import urllib
 
 
 APP_NAME = 'digiglass'
@@ -168,6 +170,12 @@ def get_user_category(categories):
     return found
 
 
+def open_digikey(category, search_term):
+    url = ('http://www.digikey.com/product-search/en/a/a/{}?k={}'
+           .format(category.id, urllib.parse.quote(search_term)))
+    webbrowser.open(url)
+
+
 def main():
     args = docopt(__doc__)
 
@@ -184,13 +192,13 @@ def main():
         # Search with category
         suggested_cats = closest_categories(dirty_cat, all_categories())
         clean_cat = get_user_category(suggested_cats)
-        print(clean_cat)
 
     else:
         # Pick categories from search keyword
         suggested_cats = categories_for_keyword(search_term)
         clean_cat = get_user_category(suggested_cats)
-        print(clean_cat)
+
+    open_digikey(clean_cat, search_term)
 
 
 if __name__ == '__main__':
