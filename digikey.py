@@ -8,19 +8,20 @@ Usage:
     digikey --category CAT_NAME KEYWORDS...
 
 Options:
-    --category CAT_NAME     The name of a Digi-Key category, e.g.
-                            "Battery Chargers", "led discrete".
+    --category CAT_NAME     Search for products in a specific Digi-Key category,
+                            e.g. "Battery Chargers", "led discrete".
                             Supports fuzzy search.
 """
 
 import requests
 from bs4 import BeautifulSoup
 from docopt import docopt
+from fuzzywuzzy import process
+from getch import getch
+from colored import fg, attr
 
 import re
-
-
-prods_raw = requests.get('http://www.digikey.com/product-search/en').text
+import sys
 
 
 class Category:
@@ -65,6 +66,12 @@ def parse_categories(page_tree):
     return cat_items
 
 
+def all_categories():
+    cats_tree = get_as_bs_tree('http://www.digikey.com/product-search/en')
+    categories = parse_categories(cats_tree)
+    return categories
+
+
 def get_as_bs_tree(*args, **kwargs):
     """
     Retrieve a page using Requests and return its BeautifulSoup
@@ -73,11 +80,38 @@ def get_as_bs_tree(*args, **kwargs):
     return BeautifulSoup(requests.get(*args, **kwargs).text)
 
 
+def closest_categories(search_term, categories, limit=10):
+    return [cat for (cat, score) in
+            process.extract(search_term, categories,
+                            processor=lambda c: c.name, limit=limit)]
+
+
+def getkey(message):
+    print('{}: '.format(message), end='')
+    sys.stdout.flush()
+    answer = getch()
+    print(answer)
+    return answer
+
+
+def get_user_category(categories):
+    letters = 'abcdefghijklmnopqrstuvwxyz'[:len(categories)]
+    lookup = dict(zip(letters, categories))
+    for letter, category in sorted(lookup.items(), key=lambda t: t[0]):
+        print('{}{}{}. {}{}{} - {}{}{}'.format(
+              fg('red'), letter, attr('reset'),
+              fg('green'), category.parent, attr('reset'),
+              fg('yellow'), category.name, attr('reset')))
+    key = getkey('Select a category')
+    return lookup[key.lower()]
+
 if __name__ == '__main__':
     args = docopt(__doc__)
-    category = args['--category']
+    dirty_cat = args['--category']
     search_term = ' '.join(args['KEYWORDS'])
-    if category:
-        print('Searching for {} in {}'.format(search_term, category))
+    if dirty_cat:
+        suggested_cats = closest_categories(search_term, all_categories())
+        clean_cat = get_user_category(suggested_cats)
+        print(clean_cat)
     else:
         print('Searching for {}, no category given'.format(search_term))
