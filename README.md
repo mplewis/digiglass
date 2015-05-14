@@ -29,6 +29,42 @@ This is a Python 3 script, so use `pip3` to install:
 pip3 install digiglass
 ```
 
+# Filters
+
+Specify a filter to be used during a search like this: `digiglass --filter some_new_filter`
+
+You can customize the filters used by Digiglass by modifying `~/.digiglass`. It's a YAML file that looks like this:
+
+```
+filters:
+    my_filter:
+        in_stock: true
+        lead_free: false
+        rohs_compliant: false
+        sort_by: '1000011'  # Unit price, USD, ascending
+        min_quantity: 1
+    pb_rohs:
+        lead_free: true
+        rohs_compliant: true
+
+settings:
+    default_filter: my_filter
+```
+
+Valid options are:
+
+* `in_stock`: Item must be in stock
+* `lead_free`: Item must be lead free
+* `rohs_compliant`: Item must be RoHS compliant
+* `sort_by`: The column by which to sort results
+* `min_quantity`: At least this many of this item must be available
+
+Every field in a filter is optional.
+
+`default_filter` is used when no filter is specified.
+
+Fields not specified in a requested filter use the default filter's settings.
+
 # Troubleshooting
 
 Having issues? Try clearing the app's cache: `digiglass --clear-cache`
