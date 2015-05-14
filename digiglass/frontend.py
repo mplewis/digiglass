@@ -3,20 +3,10 @@
 from .constants import LETTERS
 
 from colored import fg, attr
-from getch import getch
 
 import sys
 import webbrowser
 import urllib
-
-
-def getkey(message):
-    """Get one key from the user."""
-    print('{}: '.format(message), end='')
-    sys.stdout.flush()
-    answer = getch()
-    print(answer)
-    return answer
 
 
 def get_user_category(categories):
@@ -36,10 +26,12 @@ def get_user_category(categories):
     found = None
     while not found:
         try:
-            key = getkey('Select a category')
-            found = lookup[key.lower()]
+            key = input('Select a category: ')
+            found = lookup[key.strip().lower()]
         except KeyError:
             print('Invalid selection.')
+        except KeyboardInterrupt:
+            sys.exit(0)
     return found
 
 

@@ -75,7 +75,6 @@ def main():
         clean_cat = get_user_category(suggested_cats)
 
     user_filter = get_filter(filter_name)
-    print(user_filter)
     open_digikey(clean_cat, search_term, user_filter)
 
 

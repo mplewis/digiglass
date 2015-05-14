@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open('README.md') as f:
     long_description = f.read()
@@ -19,10 +19,10 @@ setup(
     install_requires=deps,
     entry_points={
         'console_scripts': [
-            'digiglass = digiglass:main',
+            'digiglass = digiglass.digiglass:main',
         ]
     },
-    package_dir={'': 'digiglass'},
+    packages=find_packages(),
     include_package_data=True,
     classifiers=[
         'Development Status :: 5 - Production/Stable',

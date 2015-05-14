@@ -13,7 +13,7 @@ filters:
         lead_free: false
         rohs_compliant: false
         sort_by: '1000011'  # Unit price, USD, ascending
-        quantity: 1
+        min_quantity: 1
     pb_rohs:
         lead_free: true
         rohs_compliant: true
