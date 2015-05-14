@@ -1,9 +1,8 @@
-from .constants import SETTINGS_FILE, DEFAULT_SETTINGS_FILE
+from .constants import SETTINGS_FILE, DEFAULT_SETTINGS
 
 import yaml
 
 import os
-import shutil
 
 
 ARG_NAMES = {
@@ -28,7 +27,8 @@ def create_config(force=False):
     """
     file_exists = os.path.isfile(SETTINGS_FILE)
     if (not file_exists) or force:
-        shutil.copyfile(DEFAULT_SETTINGS_FILE, SETTINGS_FILE)
+        with open(SETTINGS_FILE, 'wb') as f:
+            f.write(DEFAULT_SETTINGS())
 
 
 def default_filter_name():
