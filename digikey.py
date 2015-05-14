@@ -5,16 +5,17 @@ Digi-Key terminal search engine.
 
 Usage:
     digikey KEYWORDS...
+    digikey --category CAT_NAME
     digikey --category CAT_NAME KEYWORDS...
     digikey --clear-cache
 
 Options:
-    --category CAT_NAME     Search for products in a specific Digi-Key category,
-                            e.g. "Battery Chargers", "led discrete".
-                            Supports fuzzy search.
-    --clear-cache           Clears local data cached from Digi-Key. Data expires
-                            on its own every 15 minutes, even if not cleared
-                            manually.
+    -c CAT_NAME, --category CAT_NAME
+        Search for products in a specific Digi-Key category, e.g.
+        "Battery Chargers", "ceramic cap". Supports fuzzy search.
+    --clear-cache
+        Clears local data cached from Digi-Key. Data expires on its own every
+        15 minutes, even if not cleared manually.
 """
 
 import requests
@@ -54,7 +55,7 @@ class Category:
         self.id = id
         self.name = name
         self.parent = parent
-        self.qty = qty
+        self.qty = int(qty)
 
     def __repr__(self):
         return ('<Category {}: {} - {} ({} items)>'
@@ -171,17 +172,29 @@ def get_user_category(categories):
 
 
 def open_digikey(category, search_term):
-    url = ('http://www.digikey.com/product-search/en/a/a/{}?k={}'
-           .format(category.id, urllib.parse.quote(search_term)))
+    args = {
+        'ColumnSort': 1000011,
+        'stock': 1,
+        'pbfree': 1,
+        'rohs': 1,
+        'quantity': 1
+    }
+    if search_term is not None:
+        args['k'] = search_term
+    args_encoded = urllib.parse.urlencode(args)
+    url = ('http://www.digikey.com/product-search/en/a/a/{}?{}'
+           .format(category.id, args_encoded))
     webbrowser.open(url)
 
 
 def main():
     args = docopt(__doc__)
 
+    print(args)
+
     clear_cache = args['--clear-cache']
     dirty_cat = args['--category']
-    search_term = ' '.join(args['KEYWORDS'])
+    search_term = ' '.join(args['KEYWORDS']) or None
 
     if clear_cache:
         CATEGORY_CACHE.clear()
