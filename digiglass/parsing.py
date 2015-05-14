@@ -1,6 +1,6 @@
 """Everything that parses Digi-Key's HTML into usable data."""
 
-from models import Category
+from .models import Category
 
 import re
 

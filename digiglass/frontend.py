@@ -1,6 +1,6 @@
 """Everything that deals with user input."""
 
-from constants import LETTERS
+from .constants import LETTERS
 
 from colored import fg, attr
 from getch import getch

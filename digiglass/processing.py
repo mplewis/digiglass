@@ -1,6 +1,6 @@
 """Everything dealing with filtering or matching based on user data."""
 
-from constants import MAX_CATEGORIES
+from .constants import MAX_CATEGORIES
 
 from fuzzywuzzy import process
 

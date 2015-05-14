@@ -1,3 +1,7 @@
+from os.path import expanduser
+
+SETTINGS_FILE = expanduser('~/.digiglass')
+
 APP_NAME = 'digiglass'
 APP_AUTHOR = 'mplewis'
 CACHE_EXPIRY = 900  # 15 minutes

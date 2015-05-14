@@ -1,7 +1,7 @@
 """Everything that deals with access to digikey.com and data caching."""
 
-from constants import APP_NAME, APP_AUTHOR, CACHE_EXPIRY
-from parsing import get_as_bs_tree, parse_categories
+from .constants import APP_NAME, APP_AUTHOR, CACHE_EXPIRY
+from .parsing import get_as_bs_tree, parse_categories
 
 import appdirs
 from beaker.cache import CacheManager
