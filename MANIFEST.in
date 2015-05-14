@@ -1,1 +1,2 @@
 recursive-include digiglass/resource *
+include requirements.txt

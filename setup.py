@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='digiglass',
-    version='1.0.0',
+    version='0.0.8',
     description=('Search Digi-Key from your terminal'),
     long_description=long_description,
     url='https://github.com/mplewis/digiglass',
@@ -19,13 +19,11 @@ setup(
     install_requires=deps,
     entry_points={
         'console_scripts': [
-            'digiglass = digiglass.digiglass:main',
+            'digiglass = digiglass:main',
         ]
     },
+    package_dir={'': 'digiglass'},
     include_package_data=True,
-    package_data={
-        'digiglass': ['resource/*']
-    },
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: MIT License',
