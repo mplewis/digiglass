@@ -43,15 +43,8 @@ def get_user_category(categories):
     return found
 
 
-def open_digikey(category, search_term):
+def open_digikey(category, search_term, args):
     """Open a browser to the Digi-Key search page for the given arguments."""
-    args = {
-        'ColumnSort': 1000011,
-        'stock': 1,
-        'pbfree': 1,
-        'rohs': 1,
-        'quantity': 1
-    }
     if search_term is not None:
         args['k'] = search_term
     args_encoded = urllib.parse.urlencode(args)
