@@ -1,21 +1,22 @@
 from setuptools import setup, find_packages
 
-with open('README.md') as f:
+with open('README.rst') as f:
     long_description = f.read()
 
 with open('requirements.txt') as f:
     deps = f.read().splitlines()
 
+print(find_packages())
+
 setup(
     name='digiglass',
-    version='0.0.8',
+    version='1.0.1',
     description=('Search Digi-Key from your terminal'),
     long_description=long_description,
     url='https://github.com/mplewis/digiglass',
     license='MIT',
     author='Matthew Lewis',
     author_email='matt@mplewis.com',
-    py_modules=['digiglass'],
     install_requires=deps,
     entry_points={
         'console_scripts': [
