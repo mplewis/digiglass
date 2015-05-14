@@ -1,10 +1,11 @@
-# This is where you can define custom filters for Digiglass.
+# Define custom filters for Digiglass in this YAML file.
 # Every field is optional.
 #
 # Specify a filter to be used during a search like this:
 #     digiglass --filter some_new_filter
 #
 # default_filter is used when no filter is specified.
+# Fields not specified in a requested filter use the default filter's settings.
 
 filters:
     my_filter:
