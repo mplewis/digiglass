@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Digi-Key terminal search engine.
+Digiglass - a Digi-Key terminal search engine
 
 Usage:
     digikey KEYWORDS...
@@ -36,6 +36,7 @@ import urllib
 
 APP_NAME = 'digiglass'
 APP_AUTHOR = 'mplewis'
+# The max number of categories to display when asking the user to choose
 MAX_CATEGORIES = 20
 
 CACHE_OPTS = {
@@ -46,6 +47,7 @@ CACHE_OPTS = {
 }
 CACHE_MANAGER = CacheManager(**parse_cache_config_options(CACHE_OPTS))
 CATEGORY_CACHE = CACHE_MANAGER.get_cache('category')
+# Used for getting choices from the user
 LETTERS = 'abcdefghijklmnopqrstuvwxyz'[:MAX_CATEGORIES]
 
 
@@ -92,16 +94,19 @@ def parse_categories(page_tree):
 
 
 def _all_categories():
+    """Cache helper for all_categories."""
     cats_tree = get_as_bs_tree('http://www.digikey.com/product-search/en')
     categories = parse_categories(cats_tree)
     return categories
 
 
 def all_categories():
+    """Get all Digi-Key categories."""
     return CATEGORY_CACHE.get(key='all_categories', createfunc=_all_categories)
 
 
 def _categories_for_keyword(keyword):
+    """Cache helper for categories_for_keyword."""
     params = {'keywords': keyword}
     cats_tree = get_as_bs_tree('http://www.digikey.com/product-search/en',
                                params=params)
@@ -111,6 +116,7 @@ def _categories_for_keyword(keyword):
 
 
 def categories_for_keyword(keyword):
+    """Get the categories with the most parts for the given keyword."""
     key = 'category.{}'.format(keyword)
     to_call = lambda: _categories_for_keyword(keyword)
     return CATEGORY_CACHE.get(key=key, createfunc=to_call)
@@ -135,12 +141,17 @@ def _category_fuzzy_name(category):
 
 
 def closest_categories(search_term, categories, limit=MAX_CATEGORIES):
+    """
+    Use fuzzy string matching to find the category closest to what the user was
+    searching for.
+    """
     results = process.extract(search_term, categories,
                               processor=_category_fuzzy_name, limit=limit)
     return [category for (category, _) in results[:limit]]
 
 
 def getkey(message):
+    """Get one key from the user."""
     print('{}: '.format(message), end='')
     sys.stdout.flush()
     answer = getch()
@@ -149,6 +160,7 @@ def getkey(message):
 
 
 def get_user_category(categories):
+    """Ask the user to pick a part category from a list."""
     lookup = dict(zip(LETTERS, categories))
     longest = 0
     for category in lookup.values():
@@ -172,6 +184,7 @@ def get_user_category(categories):
 
 
 def open_digikey(category, search_term):
+    """Open a browser to the Digi-Key search page for the given arguments."""
     args = {
         'ColumnSort': 1000011,
         'stock': 1,
@@ -188,6 +201,7 @@ def open_digikey(category, search_term):
 
 
 def main():
+    """Parse arguments and perform the search."""
     args = docopt(__doc__)
 
     print(args)
