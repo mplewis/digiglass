@@ -1,6 +1,7 @@
 from os.path import expanduser
 
 SETTINGS_FILE = expanduser('~/.digiglass')
+DEFAULT_SETTINGS_FILE = 'digiglass/resource/default_settings.yml'
 
 APP_NAME = 'digiglass'
 APP_AUTHOR = 'mplewis'

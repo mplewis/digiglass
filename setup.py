@@ -23,6 +23,9 @@ setup(
         ]
     },
     include_package_data=True,
+    package_data={
+        'digiglass': ['resource/*']
+    },
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: MIT License',

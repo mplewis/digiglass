@@ -7,6 +7,7 @@ Usage:
     digiglass [-f FILTER] [-c CATEGORY] KEYWORDS...
     digiglass [-f FILTER] -c CATEGORY
     digiglass --list-filters
+    digiglass --reset-config
     digiglass --clear-cache
 
 Options:
@@ -18,6 +19,8 @@ Options:
         Configure filters in the ~/.digiglass file.
     --list-filters
         List all available filters.
+    --reset-config
+        Resets your ~/.digiglass config file to the default.
     --clear-cache
         Clears local data cached from Digi-Key. Data expires on its own every
         15 minutes, even if not cleared manually.
@@ -26,32 +29,39 @@ Options:
 from .processing import closest_categories
 from .backend import all_categories, categories_for_keyword, clear_cache
 from .frontend import get_user_category, open_digikey
-from .settings import available_filter_names, get_filter, default_filter_name
+from .settings import (available_filter_names, get_filter, default_filter_name,
+                       create_config)
 
 from docopt import docopt
 
 
 def main():
     """Parse arguments and perform the search."""
+    create_config()
+
     args = docopt(__doc__)
 
     list_filters = args['--list-filters']
+    reset_config = args['--reset-config']
     do_clear_cache = args['--clear-cache']
     dirty_cat = args['--category']
     search_term = ' '.join(args['KEYWORDS']) or None
     filter_name = args['--filter']
 
-    if list_filters:
-        print('Available filters:')
-        for n in available_filter_names():
-            print('    {}'.format(n))
-        print()
-        print('Default filter: {}'.format(default_filter_name()))
+    if reset_config:
+        create_config(force=True)
+        print('Config file reset to defaults.')
         return
 
     if do_clear_cache:
         clear_cache()
         print('Cache cleared.')
+        return
+
+    if list_filters:
+        print('Available filters: {}'
+              .format(', '.join(available_filter_names())))
+        print('Default filter: {}'.format(default_filter_name()))
         return
 
     if dirty_cat:

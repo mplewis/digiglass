@@ -1,6 +1,9 @@
-from .constants import SETTINGS_FILE
+from .constants import SETTINGS_FILE, DEFAULT_SETTINGS_FILE
 
 import yaml
+
+import os
+import shutil
 
 
 ARG_NAMES = {
@@ -16,6 +19,16 @@ BOOLEANS = ['stock', 'pbfree', 'rohs']
 def _dotfile():
     with open(SETTINGS_FILE) as f:
         return yaml.load(f.read())
+
+
+def create_config(force=False):
+    """
+    Create the default ~/.digiglass file if it doesn't already exist.
+    Set force=True to erase the existing file and replace it with the default.
+    """
+    file_exists = os.path.isfile(SETTINGS_FILE)
+    if (not file_exists) or force:
+        shutil.copyfile(DEFAULT_SETTINGS_FILE, SETTINGS_FILE)
 
 
 def default_filter_name():
