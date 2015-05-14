@@ -6,8 +6,6 @@ with open('README.rst') as f:
 with open('requirements.txt') as f:
     deps = f.read().splitlines()
 
-print(find_packages())
-
 setup(
     name='digiglass',
     version='1.0.1',
