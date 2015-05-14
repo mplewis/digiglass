@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Digiglass - a Digi-Key terminal search engine
+Digiglass - Search Digi-Key from your terminal
 
 Usage:
     digiglass KEYWORDS...
