@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='digiglass',
-    version='1.0.3',
+    version='1.0.4',
     description=('Search Digi-Key from your terminal'),
     long_description=long_description,
     url='https://github.com/mplewis/digiglass',

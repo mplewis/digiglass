@@ -13,6 +13,10 @@ def parse_categories(page_tree):
     Convert a BeautifulSoup tree for a Digi-Key page with a list of product
     categories into a list of Category objects.
     """
+    no_results = page_tree.find(class_='no-records')
+    if no_results:  # Digi-Key: "No records match your search criteria"
+        return None
+
     prods = page_tree.find(id='productIndexList')
     categories = prods.find_all(class_='catfilteritem')
     cat_items = []

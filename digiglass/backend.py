@@ -41,7 +41,8 @@ def _categories_for_keyword(keyword):
     cats_tree = get_as_bs_tree('http://www.digikey.com/product-search/en',
                                params=params)
     categories = parse_categories(cats_tree)
-    categories.sort(key=lambda c: c.qty, reverse=True)
+    if categories:
+        categories.sort(key=lambda c: c.qty, reverse=True)
     return categories
 
 

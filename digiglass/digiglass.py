@@ -34,6 +34,8 @@ from .settings import (available_filter_names, get_filter, default_filter_name,
 
 from docopt import docopt
 
+import sys
+
 
 def main():
     """Parse arguments and perform the search."""
@@ -72,6 +74,11 @@ def main():
     else:
         # Pick categories from search keyword
         suggested_cats = categories_for_keyword(search_term)
+
+        if not suggested_cats:
+            print('No items found for keyword(s) {}'.format(search_term))
+            sys.exit(0)
+
         clean_cat = get_user_category(suggested_cats)
 
     user_filter = get_filter(filter_name)
