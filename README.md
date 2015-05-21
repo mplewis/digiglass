@@ -69,6 +69,8 @@ Fields not specified in a requested filter use the default filter's settings.
 
 Having issues? Try clearing the app's cache: `digiglass --clear-cache`
 
+Still having issues? Odds are Digi-Key changed their HTML format. They probably broke the app's screen scraping. Let me know and I'll try and fix it—or dig in yourself! Screen scraping is fun.
+
 # Contributions
 
 Bug reports, fixes, or features? Feel free to open an issue or pull request any time. You can also tweet me at [@mplewis](http://twitter.com/mplewis) or email me at [matt@mplewis.com](mailto:matt@mplewis.com).
